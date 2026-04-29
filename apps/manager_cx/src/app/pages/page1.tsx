@@ -1,0 +1,10 @@
+export function Page1() {
+  return (
+    <div>
+      <h2>Manager CX - Page 1</h2>
+      <p>Conteúdo da Page 1.</p>
+    </div>
+  );
+}
+
+export default Page1;

@@ -1,0 +1,119 @@
+{
+  "name": "pc_builder",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "pc_builder",
+    "sourceRoot": "apps/pc_builder/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/webpack:webpack",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "compiler": "babel",
+          "outputPath": "apps/pc_builder/dist",
+          "index": "apps/pc_builder/src/index.html",
+          "baseHref": "/",
+          "main": "apps/pc_builder/src/main.ts",
+          "tsConfig": "apps/pc_builder/tsconfig.app.json",
+          "assets": [
+            "apps/pc_builder/src/favicon.ico",
+            "apps/pc_builder/src/assets"
+          ],
+          "styles": [
+            "apps/pc_builder/src/styles.css"
+          ],
+          "scripts": [],
+          "webpackConfig": "apps/pc_builder/webpack.config.ts",
+          "postcssConfig": "apps/pc_builder/postcss.config.js"
+        },
+        "configurations": {
+          "development": {
+            "extractLicenses": false,
+            "optimization": false,
+            "sourceMap": true,
+            "vendorChunk": true
+          },
+          "production": {
+            "fileReplacements": [
+              {
+                "replace": "apps/pc_builder/src/environments/environment.ts",
+                "with": "apps/pc_builder/src/environments/environment.prod.ts"
+              }
+            ],
+            "optimization": true,
+            "outputHashing": "all",
+            "sourceMap": false,
+            "namedChunks": false,
+            "extractLicenses": true,
+            "vendorChunk": false
+          }
+        },
+        "dependsOn": [
+          "^build",
+          "typecheck"
+        ]
+      },
+      "serve": {
+        "executor": "@nx/react:module-federation-dev-server",
+        "defaultConfiguration": "development",
+        "options": {
+          "buildTarget": "pc_builder:build",
+          "hmr": true,
+          "port": 4202
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "pc_builder:build:development"
+          },
+          "production": {
+            "buildTarget": "pc_builder:build:production",
+            "hmr": false
+          }
+        },
+        "dependsOn": [
+          "typecheck"
+        ]
+      },
+      "lint": {
+        "executor": "@nx/eslint:lint"
+      },
+      "serve-static": {
+        "executor": "@nx/react:module-federation-static-server",
+        "defaultConfiguration": "production",
+        "options": {
+          "serveTarget": "pc_builder:serve"
+        },
+        "configurations": {
+          "development": {
+            "serveTarget": "pc_builder:serve:development"
+          },
+          "production": {
+            "serveTarget": "pc_builder:serve:production"
+          }
+        }
+      },
+      "test": {
+        "executor": "@nx/jest:jest",
+        "outputs": [
+          "{projectRoot}/test-output/jest/coverage"
+        ],
+        "options": {
+          "jestConfig": "apps/pc_builder/jest.config.cts"
+        }
+      }
+    }
+  },
+  "exports": {
+    "./Module": {
+      "@org/source": "./src/remote-entry.ts",
+      "types": "./src/remote-entry.ts",
+      "import": "./src/remote-entry.ts",
+      "default": "./src/remote-entry.ts"
+    }
+  },
+  "types": "./src/remote-entry.ts"
+}
