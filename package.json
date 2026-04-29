@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "nx serve shell --devRemotes=product,pc_builder,manager_cx"
+    "dev": "nx serve shell --devRemotes=product,pc_builder,manager_cx",
+    "ui:build": "nx build ui",
+    "ui:build:watch": "nx build ui --watch"
   },
   "private": true,
   "devDependencies": {
@@ -17,6 +19,7 @@
     "@nx/js": "22.7.0",
     "@nx/module-federation": "22.7.0",
     "@nx/react": "^22.7.0",
+    "@nx/vite": "22.7.0",
     "@nx/web": "22.7.0",
     "@nx/webpack": "22.7.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
@@ -25,13 +28,16 @@
     "@swc/cli": "~0.8.0",
     "@swc/core": "1.15.8",
     "@swc/helpers": "0.5.18",
+    "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "10.4.0",
     "@testing-library/react": "16.3.0",
     "@types/jest": "^30.0.0",
     "@types/node": "20.19.9",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@tailwindcss/postcss": "^4",
+    "@vitejs/plugin-react": "^6.0.0",
+    "@vitest/ui": "~4.1.0",
+    "ajv": "^8.0.0",
     "babel-jest": "^30.0.2",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",
@@ -42,6 +48,8 @@
     "jest": "^30.0.2",
     "jest-environment-jsdom": "^30.0.2",
     "jest-util": "^30.0.2",
+    "jiti": "2.4.2",
+    "jsdom": "~22.1.0",
     "nx": "22.7.0",
     "postcss": "8.4.38",
     "prettier": "^3.8.1",
@@ -51,7 +59,10 @@
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
-    "typescript-eslint": "^8.40.0"
+    "typescript-eslint": "^8.40.0",
+    "vite": "^8.0.0",
+    "vite-plugin-dts": "~4.5.0",
+    "vitest": "~4.1.0"
   },
   "workspaces": [
     "packages/*",
