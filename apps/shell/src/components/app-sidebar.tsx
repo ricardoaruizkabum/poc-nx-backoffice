@@ -17,7 +17,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@kbm/ui';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { SideBarFooter } from './app-sidebar-footer';
 
 const items = [
@@ -105,14 +105,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 item.children ? (
                   <CollapsibleMenuItem key={item.title} item={item} />
                 ) : (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <Link to={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                  <SimpleMenuItem key={item.title} item={item} />
                 ),
               )}
             </SidebarMenu>
@@ -126,7 +119,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 type MenuItem = (typeof items)[number];
 
+function SimpleMenuItem({ item }: { item: MenuItem }) {
+  const location = useLocation();
+  const isActive = location.pathname === item.url;
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={isActive}>
+        <Link to={item.url}>
+          <item.icon />
+          <span>{item.title}</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
+
 function CollapsibleMenuItem({ item }: { item: MenuItem }) {
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   return (
     <Collapsible open={open} onOpenChange={setOpen} asChild>
@@ -144,7 +153,10 @@ function CollapsibleMenuItem({ item }: { item: MenuItem }) {
           <SidebarMenuSub>
             {item.children?.map((child) => (
               <SidebarMenuSubItem key={child.title}>
-                <SidebarMenuSubButton asChild>
+                <SidebarMenuSubButton
+                  asChild
+                  isActive={location.pathname === child.url}
+                >
                   <Link to={child.url}>
                     <child.icon />
                     <span>{child.title}</span>

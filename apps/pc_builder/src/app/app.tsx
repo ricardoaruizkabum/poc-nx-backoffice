@@ -1,4 +1,4 @@
-import { Link, Routes, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import NxWelcome from './nx-welcome';
 import Page1 from './pages/page1';
 import Page2 from './pages/page2';
@@ -6,12 +6,12 @@ import Page2 from './pages/page2';
 export function App() {
   return (
     <>
-      <nav className='flex gap-2 px-1 py-4 bg-gray-100'>
+      {/* <nav className='flex gap-2 px-1 py-4 bg-gray-100'>
         <Link to=".">PC Builder</Link>
         <Link to="page1">Page 1</Link>
         <Link to="page2">Page 2</Link>
-      </nav>
-      <div className='px-10'>
+      </nav> */}
+      <div className="px-10">
         <Routes>
           <Route index element={<NxWelcome title="PC Builder" />} />
           <Route path="page1" element={<Page1 />} />
