@@ -11,7 +11,7 @@ type Route = {
 export const routes: Route[] = [
   {
     path: '/',
-    element: <NxWelcome title="Manager CX" />,
+    element: <NxWelcome title="Product" />,
     index: true,
   },
   {

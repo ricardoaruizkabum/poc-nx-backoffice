@@ -1,8 +1,8 @@
 export function Page2() {
   return (
     <div>
-      <h2>Manager CX - Page 2</h2>
-      <p>Conteúdo da Page 2.</p>
+      <h2 className="text-xl font-bold">Manager - Page 2</h2>
+      <p className="text-lg font-semibold text-gray-500">Conteúdo da Page 2.</p>
     </div>
   );
 }

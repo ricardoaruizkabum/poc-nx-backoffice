@@ -3,8 +3,8 @@ import { Button, Input } from '@kbm/ui';
 export function Page1() {
   return (
     <div>
-      <h2>Product - Page 1</h2>
-      <p>Conteúdo da Page 1.</p>
+      <h2 className="text-xl font-bold">Produto - Page 1</h2>
+      <p className="text-lg font-semibold text-gray-500">Conteúdo da Page 1.</p>
 
       <div className="flex">
         <Button variant="default">Click Here</Button>
