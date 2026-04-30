@@ -4,8 +4,8 @@ import {
   Separator,
   SidebarTrigger,
 } from '@kbm/ui';
+import { SwitchTheme } from './app-switch-theme';
 import { UserOptions } from './app-user-options';
-import { SwitchTheme } from './switch-theme';
 
 export const AppHeader = () => {
   return (

@@ -18,7 +18,7 @@ import {
   SidebarMenuSubItem,
 } from '@kbm/ui';
 import { Link, useLocation } from 'react-router-dom';
-import { items } from '../menu';
+import { items } from '../../menu';
 import { SideBarFooter } from './app-sidebar-footer';
 
 type MenuItem = {

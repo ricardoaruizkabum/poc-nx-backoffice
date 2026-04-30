@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@kbm/ui';
-import { useTheme } from '../providers/theme-provider';
+import { useTheme } from '../../providers/theme-provider';
 
 export const SwitchTheme = () => {
   const { setTheme } = useTheme();

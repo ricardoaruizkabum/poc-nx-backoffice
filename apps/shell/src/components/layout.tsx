@@ -1,8 +1,8 @@
 import { SidebarInset, SidebarProvider } from '@kbm/ui';
 import { Outlet } from 'react-router-dom';
 import { ThemeProvider } from '../providers/theme-provider';
-import { AppHeader } from './app-header';
-import { AppSidebar } from './app-sidebar';
+import { AppHeader } from './app-header/app-header';
+import { AppSidebar } from './app-sidebar/app-sidebar';
 
 export function Layout() {
   return (
