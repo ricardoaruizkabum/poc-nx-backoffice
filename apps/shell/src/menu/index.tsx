@@ -16,7 +16,7 @@ export const items: MenuItem[] = [
     url: '/',
     icon: Home,
   },
-  ...productMenu,
-  ...pcBuilderMenu,
   ...managerCxMenu,
+  ...pcBuilderMenu,
+  ...productMenu,
 ];

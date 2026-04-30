@@ -1,20 +1,20 @@
-import { FolderKanban } from 'lucide-react';
+import { FolderKanban, MemoryStick, Microchip } from 'lucide-react';
 
 export const pcBuilderMenu = [
   {
-    title: 'Pc Builder',
+    title: 'PC Builder',
     url: '/pc_builder',
     icon: FolderKanban,
     children: [
       {
-        title: 'Page 1',
+        title: 'Processador',
         url: '/pc_builder/page1',
-        icon: FolderKanban,
+        icon: Microchip,
       },
       {
-        title: 'Page 2',
+        title: 'Memória',
         url: '/pc_builder/page2',
-        icon: FolderKanban,
+        icon: MemoryStick,
       },
     ],
   },

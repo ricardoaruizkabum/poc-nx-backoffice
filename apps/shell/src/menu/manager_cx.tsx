@@ -1,4 +1,4 @@
-import { FolderKanban } from 'lucide-react';
+import { FolderKanban, MapPinHouse, User } from 'lucide-react';
 
 export const managerCxMenu = [
   {
@@ -7,14 +7,14 @@ export const managerCxMenu = [
     icon: FolderKanban,
     children: [
       {
-        title: 'Page 1',
+        title: 'Pessoa',
         url: '/manager_cx/page1',
-        icon: FolderKanban,
+        icon: User,
       },
       {
-        title: 'Page 2',
+        title: 'Endereço',
         url: '/manager_cx/page2',
-        icon: FolderKanban,
+        icon: MapPinHouse,
       },
     ],
   },

@@ -1,4 +1,4 @@
-import { FolderKanban } from 'lucide-react';
+import { FolderKanban, Settings, TablePropertiesIcon } from 'lucide-react';
 
 export const productMenu = [
   {
@@ -7,14 +7,14 @@ export const productMenu = [
     icon: FolderKanban,
     children: [
       {
-        title: 'Page 1',
+        title: 'Opções',
         url: '/product/page1',
-        icon: FolderKanban,
+        icon: Settings,
       },
       {
-        title: 'Page 2',
+        title: 'Propriedades',
         url: '/product/page2',
-        icon: FolderKanban,
+        icon: TablePropertiesIcon,
       },
     ],
   },
