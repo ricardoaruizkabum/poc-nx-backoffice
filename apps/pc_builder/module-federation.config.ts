@@ -6,7 +6,10 @@ const config: ModuleFederationConfig = {
     './Module': './src/remote-entry.ts',
   },
   additionalShared: [
-    ['react-router-dom', { singleton: true, strictVersion: false, requiredVersion: '^6.0.0' }],
+    [
+      'react-router-dom',
+      { singleton: true, strictVersion: false, requiredVersion: '^6.0.0' },
+    ],
   ],
 };
 

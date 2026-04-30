@@ -16,7 +16,10 @@ const config: ModuleFederationConfig = {
    */
   remotes: ['product', 'pc_builder', 'manager_cx'],
   additionalShared: [
-    ['react-router-dom', { singleton: true, strictVersion: false, requiredVersion: '^6.0.0' }],
+    [
+      'react-router-dom',
+      { singleton: true, strictVersion: false, requiredVersion: '^6.0.0' },
+    ],
   ],
 };
 

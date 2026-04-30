@@ -1,4 +1,4 @@
-import { Button, Input } from "@kbm/ui";
+import { Button, Input } from '@kbm/ui';
 
 export function Page1() {
   return (
@@ -7,8 +7,8 @@ export function Page1() {
       <p>Conteúdo da Page 1.</p>
 
       <div className="flex">
-        <Button variant='default'>Click Here</Button>
-        <Input placeholder="Type your content here"/>
+        <Button variant="default">Click Here</Button>
+        <Input placeholder="Type your content here" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noUnknownAtRules: <arquivo gerado pelo shadcn> */
-@import "tw-animate-css";
-@import "tailwindcss";
+@import 'tw-animate-css';
+@import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -123,7 +123,6 @@
     @apply bg-background text-foreground;
   }
 }
-
 
 /* @import "tailwindcss";
 @import "tw-animate-css";
