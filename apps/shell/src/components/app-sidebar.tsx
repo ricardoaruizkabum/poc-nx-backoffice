@@ -1,4 +1,4 @@
-import { ChevronRight, FolderKanban, Home } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
 import {
@@ -18,66 +18,8 @@ import {
   SidebarMenuSubItem,
 } from '@kbm/ui';
 import { Link, useLocation } from 'react-router-dom';
+import { items } from '../menu';
 import { SideBarFooter } from './app-sidebar-footer';
-
-const items = [
-  {
-    title: 'Home',
-    url: '/',
-    icon: Home,
-  },
-  {
-    title: 'Produto',
-    url: '/product',
-    icon: FolderKanban,
-    children: [
-      {
-        title: 'Page 1',
-        url: '/product/page1',
-        icon: FolderKanban,
-      },
-      {
-        title: 'Page 2',
-        url: '/product/page2',
-        icon: FolderKanban,
-      },
-    ],
-  },
-  {
-    title: 'Pc Builder',
-    url: '/pc_builder',
-    icon: FolderKanban,
-    children: [
-      {
-        title: 'Page 1',
-        url: '/pc_builder/page1',
-        icon: FolderKanban,
-      },
-      {
-        title: 'Page 2',
-        url: '/pc_builder/page2',
-        icon: FolderKanban,
-      },
-    ],
-  },
-  {
-    title: 'Manager CX',
-    url: '/manager_cx',
-    icon: FolderKanban,
-    children: [
-      {
-        title: 'Page 1',
-        url: '/manager_cx/page1',
-        icon: FolderKanban,
-      },
-      {
-        title: 'Page 2',
-        url: '/manager_cx/page2',
-        icon: FolderKanban,
-      },
-    ],
-  },
-];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
