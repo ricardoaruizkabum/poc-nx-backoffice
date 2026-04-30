@@ -1,0 +1,13 @@
+{
+  // Prettier como formatador padrão
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Formatar ao salvar
+  "editor.formatOnSave": true,
+
+  // Organizar imports ao salvar
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "always",
+    "source.fixAll.eslint": "always"
+  }
+}

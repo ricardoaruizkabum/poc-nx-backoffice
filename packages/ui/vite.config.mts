@@ -1,9 +1,9 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import dts from 'vite-plugin-dts';
 import * as path from 'path';
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,

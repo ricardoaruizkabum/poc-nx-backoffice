@@ -34,13 +34,13 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../product/tsconfig.app.json"
+      "path": "../manager_cx/tsconfig.app.json"
     },
     {
       "path": "../pc_builder/tsconfig.app.json"
     },
     {
-      "path": "../manager_cx/tsconfig.app.json"
+      "path": "../product/tsconfig.app.json"
     }
   ]
 }
