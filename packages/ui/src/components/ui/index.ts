@@ -1,3 +1,4 @@
+export * from './avatar';
 export * from './button';
 export * from './collapsible';
 export * from './dropdown-menu';

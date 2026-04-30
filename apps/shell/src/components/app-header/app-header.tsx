@@ -1,4 +1,7 @@
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuTrigger,
   Separator,
@@ -24,11 +27,10 @@ export const AppHeader = () => {
           <SwitchTheme />
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <p>UR</p>
-              {/* <Avatar>
+              <Avatar>
                 <AvatarImage src="avatar.png" />
                 <AvatarFallback>NINJA</AvatarFallback>
-              </Avatar> */}
+              </Avatar>
             </DropdownMenuTrigger>
             <UserOptions />
           </DropdownMenu>

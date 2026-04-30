@@ -40,7 +40,14 @@ export default defineConfig(() => ({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime', 'tailwindcss'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'tailwindcss',
+        'use-sync-external-store',
+        'use-sync-external-store/shim',
+      ],
     },
   },
 }));
