@@ -19,6 +19,7 @@ import {
 } from '@kbm/ui';
 import { Link, useLocation } from 'react-router-dom';
 import { items } from '../../menu';
+import { useModule } from '../../providers/module-provider';
 import { SideBarFooter } from './app-sidebar-footer';
 
 type MenuItem = {
@@ -52,9 +53,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenu>
               {items.map((item) =>
                 item.children ? (
-                  <CollapsibleMenuItem key={item.title} item={item} />
+                  <CollapsibleMenuItem
+                    key={item.title}
+                    item={item}
+                    moduleName={item.moduleName}
+                  />
                 ) : (
-                  <SimpleMenuItem key={item.title} item={item} />
+                  <SimpleMenuItem
+                    key={item.title}
+                    item={item}
+                    moduleName={item.moduleName}
+                  />
                 ),
               )}
             </SidebarMenu>
@@ -66,13 +75,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   );
 }
 
-function SimpleMenuItem({ item }: { item: MenuItem }) {
+function SimpleMenuItem({
+  item,
+  moduleName,
+}: {
+  item: MenuItem;
+  moduleName: string;
+}) {
   const location = useLocation();
   const isActive = location.pathname === item.url;
+  const { setModuleName } = useModule();
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isActive}>
-        <Link to={item.url}>
+        <Link to={item.url} onClick={() => setModuleName(moduleName)}>
           {item.icon && <item.icon />}
           <span>{item.title}</span>
         </Link>
@@ -81,7 +97,13 @@ function SimpleMenuItem({ item }: { item: MenuItem }) {
   );
 }
 
-function CollapsibleMenuItem({ item }: { item: MenuItem }) {
+function CollapsibleMenuItem({
+  item,
+  moduleName,
+}: {
+  item: MenuItem;
+  moduleName: string;
+}) {
   const [open, setOpen] = useState(false);
   return (
     <Collapsible open={open} onOpenChange={setOpen} asChild>
@@ -98,7 +120,11 @@ function CollapsibleMenuItem({ item }: { item: MenuItem }) {
         <CollapsibleContent>
           <SidebarMenuSub>
             {item.children?.map((child) => (
-              <SubMenuItem key={child.title} item={child} />
+              <SubMenuItem
+                key={child.title}
+                item={child}
+                moduleName={moduleName}
+              />
             ))}
           </SidebarMenuSub>
         </CollapsibleContent>
@@ -107,8 +133,15 @@ function CollapsibleMenuItem({ item }: { item: MenuItem }) {
   );
 }
 
-function SubMenuItem({ item }: { item: MenuItem }) {
+function SubMenuItem({
+  item,
+  moduleName,
+}: {
+  item: MenuItem;
+  moduleName: string;
+}) {
   const location = useLocation();
+  const { setModuleName } = useModule();
   const [open, setOpen] = useState(false);
 
   if (item.children) {
@@ -127,7 +160,11 @@ function SubMenuItem({ item }: { item: MenuItem }) {
           <CollapsibleContent>
             <SidebarMenuSub>
               {item.children.map((child) => (
-                <SubMenuItem key={child.title} item={child} />
+                <SubMenuItem
+                  key={child.title}
+                  item={child}
+                  moduleName={moduleName}
+                />
               ))}
             </SidebarMenuSub>
           </CollapsibleContent>
@@ -139,7 +176,7 @@ function SubMenuItem({ item }: { item: MenuItem }) {
   return (
     <SidebarMenuSubItem>
       <SidebarMenuSubButton asChild isActive={location.pathname === item.url}>
-        <Link to={item.url}>
+        <Link to={item.url} onClick={() => setModuleName(moduleName)}>
           {item.icon && <item.icon />}
           <span>{item.title}</span>
         </Link>

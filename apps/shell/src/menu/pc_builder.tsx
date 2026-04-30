@@ -1,7 +1,9 @@
 import { FolderKanban, MemoryStick, Microchip } from 'lucide-react';
+import { MenuItem } from './types';
 
-export const pcBuilderMenu = [
+export const pcBuilderMenu: MenuItem[] = [
   {
+    moduleName: 'PC Builder',
     title: 'PC Builder',
     url: '/pc_builder',
     icon: FolderKanban,
