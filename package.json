@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nx serve shell --devRemotes=product,pc_builder,manager_cx",
+    "dev1": "nx run-many --target=serve --projects=shell,product,pc_builder,manager_cx",
     "ui:build": "nx build ui",
     "ui:build:watch": "nx build ui --watch"
   },
