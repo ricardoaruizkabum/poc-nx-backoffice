@@ -1,5 +1,7 @@
 import { ModuleFederationConfig } from '@nx/module-federation';
 
+console.log('process.env.PRODUCT_REMOTE_URL', process.env.PRODUCT_REMOTE_URL);
+
 const config: ModuleFederationConfig = {
   name: 'shell',
   /**
@@ -14,7 +16,17 @@ const config: ModuleFederationConfig = {
    * declare module 'my-external-remote';
    *
    */
-  remotes: ['product', 'pc_builder', 'manager_cx'],
+  remotes: [
+    ['product', process.env.PRODUCT_REMOTE_URL ?? 'http://localhost:4201'],
+    [
+      'pc_builder',
+      process.env.PC_BUILDER_REMOTE_URL ?? 'http://localhost:4202',
+    ],
+    [
+      'manager_cx',
+      process.env.MANAGER_CX_REMOTE_URL ?? 'http://localhost:4203',
+    ],
+  ],
   additionalShared: [
     [
       'react-router-dom',
