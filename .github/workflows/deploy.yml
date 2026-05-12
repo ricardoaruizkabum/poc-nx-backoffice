@@ -65,7 +65,7 @@ jobs:
       - name: Upload artifact - shell
         uses: actions/upload-artifact@v4
         with:
-          name: dist-shell
+          name: shell
           path: apps/shell/dist
           if-no-files-found: warn
           retention-days: 7
@@ -73,7 +73,7 @@ jobs:
       - name: Upload artifact - product
         uses: actions/upload-artifact@v4
         with:
-          name: dist-product
+          name: product
           path: apps/product/dist
           if-no-files-found: warn
           retention-days: 7
@@ -81,7 +81,7 @@ jobs:
       - name: Upload artifact - pc_builder
         uses: actions/upload-artifact@v4
         with:
-          name: dist-pc_builder
+          name: pc_builder
           path: apps/pc_builder/dist
           if-no-files-found: warn
           retention-days: 7
@@ -89,7 +89,7 @@ jobs:
       - name: Upload artifact - manager_cx
         uses: actions/upload-artifact@v4
         with:
-          name: dist-manager_cx
+          name: manager_cx
           path: apps/manager_cx/dist
           if-no-files-found: warn
           retention-days: 7
