@@ -9,7 +9,7 @@ export const managerCxMenu: MenuItem[] = [
     icon: FolderKanban,
     children: [
       {
-        title: 'Pessoa',
+        title: 'Pessoa 01',
         url: '/manager_cx/page1',
         icon: User,
       },
