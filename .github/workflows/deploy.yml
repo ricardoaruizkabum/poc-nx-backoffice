@@ -54,6 +54,8 @@ jobs:
       # O nx resolve automaticamente as dependências entre projetos
       # (ex: shell depende dos remotes via module federation).
       - name: Build affected projects
+        env:
+          NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
         run: >
           npx nx affected
           --target=build
