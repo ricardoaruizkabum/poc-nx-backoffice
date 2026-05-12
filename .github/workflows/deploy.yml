@@ -29,6 +29,7 @@ jobs:
         run: npm ci
 
       - name: Cache Nx computation cache
+        id: nx-cache
         uses: actions/cache@v4
         with:
           path: .nx/cache
@@ -36,6 +37,10 @@ jobs:
           restore-keys: |
             nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
             nx-${{ runner.os }}-
+
+      - name: Clear Nx cache if partial restore
+        if: steps.nx-cache.outputs.cache-hit != 'true'
+        run: rm -rf .nx/cache
 
       # Determina os SHAs base e head para o nx affected.
       # NX_BASE aponta para o último commit bem-sucedido na main,
