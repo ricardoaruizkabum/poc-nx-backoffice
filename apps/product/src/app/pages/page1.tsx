@@ -3,7 +3,7 @@ import { Button, Input } from '@kbm/ui';
 export function Page1() {
   return (
     <div>
-      <h2 className="text-xl font-bold">Produto - Page 1</h2>
+      <h2 className="text-xl font-bold">Produto - Página 1</h2>
       <p className="text-lg font-semibold text-gray-500">Conteúdo da Page 1.</p>
 
       <div className="flex">
