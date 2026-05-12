@@ -15,20 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # recomendado para CI
       NX_DAEMON: false
-
-      # logs detalhados do nx
       NX_VERBOSE_LOGGING: true
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          # necessário para nx affected
           fetch-depth: 0
 
-      # define NX_BASE e NX_HEAD corretamente
       - name: Set SHAs for affected commands
         uses: nrwl/nx-set-shas@v4
 
@@ -42,53 +37,69 @@ jobs:
         run: npm ci
 
       - name: Show affected projects
+        id: affected
         run: |
           echo "NX_BASE=$NX_BASE"
           echo "NX_HEAD=$NX_HEAD"
 
-          npx nx show projects \
+          PROJECTS=$(npx nx show projects \
             --affected \
             --base=$NX_BASE \
-            --head=$NX_HEAD
+            --head=$NX_HEAD)
 
-      - name: Build affected projects
+          echo "Affected projects:"
+          echo "$PROJECTS"
+
+          {
+            echo 'projects<<EOF'
+            echo "$PROJECTS"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build affected projects individually
         run: |
-          npx nx affected \
-            --target=build \
-            --base=$NX_BASE \
-            --head=$NX_HEAD \
-            --configuration=production \
-            --parallel=3 \
-            --verbose
+          while IFS= read -r project
+          do
+            if [ -n "$project" ]; then
+              echo ""
+              echo "=============================="
+              echo "Building project: $project"
+              echo "=============================="
+
+              npx nx build "$project" \
+                --configuration=production \
+                --verbose
+            fi
+          done <<< "${{ steps.affected.outputs.projects }}"
 
       - name: Upload artifact - shell
         uses: actions/upload-artifact@v4
         with:
           name: shell
-          path: apps/shell/dist
-          if-no-files-found: warn
+          path: dist/apps/shell
+          if-no-files-found: ignore
           retention-days: 7
 
       - name: Upload artifact - product
         uses: actions/upload-artifact@v4
         with:
           name: product
-          path: apps/product/dist
-          if-no-files-found: warn
+          path: dist/apps/product
+          if-no-files-found: ignore
           retention-days: 7
 
       - name: Upload artifact - pc_builder
         uses: actions/upload-artifact@v4
         with:
           name: pc_builder
-          path: apps/pc_builder/dist
-          if-no-files-found: warn
+          path: dist/apps/pc_builder
+          if-no-files-found: ignore
           retention-days: 7
 
       - name: Upload artifact - manager_cx
         uses: actions/upload-artifact@v4
         with:
           name: manager_cx
-          path: apps/manager_cx/dist
-          if-no-files-found: warn
+          path: dist/apps/manager_cx
+          if-no-files-found: ignore
           retention-days: 7
