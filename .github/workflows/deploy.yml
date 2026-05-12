@@ -36,8 +36,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Show affected projects
+      - name: Get affected projects
         id: affected
+        shell: bash
         run: |
           echo "NX_BASE=$NX_BASE"
           echo "NX_HEAD=$NX_HEAD"
@@ -45,8 +46,10 @@ jobs:
           PROJECTS=$(npx nx show projects \
             --affected \
             --base=$NX_BASE \
-            --head=$NX_HEAD)
+            --head=$NX_HEAD \
+            --json | jq -r '.[]')
 
+          echo ""
           echo "Affected projects:"
           echo "$PROJECTS"
 
@@ -57,6 +60,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Build affected projects individually
+        shell: bash
         run: |
           while IFS= read -r project
           do
