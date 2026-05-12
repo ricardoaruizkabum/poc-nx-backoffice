@@ -51,15 +51,32 @@
       }
     }
   ],
-
+  
   "analytics": true,
 
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"]
+      "inputs": [
+        "production",
+        "^production"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ]
+    },
+    "@nx/webpack:webpack": {
+      "cache": true,
+      "inputs": [
+        "production",
+        "^production",
+        {
+          "env": "NX_MF_DEV_REMOTES"
+        }
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/{projectRoot}"
+      ]
     },
 
     "@nx/eslint:lint": {
@@ -91,22 +108,26 @@
         }
       }
     },
+    "test": {}
+  },
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true,
+        "style": "tailwind",
+        "linter": "eslint",
+        "bundler": "webpack"
+      },
+      "component": {
+        "style": "tailwind"
+      },
+      "library": {
+        "style": "tailwind",
+        "linter": "eslint",
 
-    "@nx/webpack:webpack": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": [
-        "production",
-        "^production",
-        {
-          "env": "NX_MF_DEV_REMOTES"
-        }
-      ],
-      "outputs": ["{workspaceRoot}/dist/{projectRoot}"]
-    },
 
-    "test": {
-      "dependsOn": ["^build"]
+        "unitTestRunner": "jest"
+      }
     }
   }
 }
