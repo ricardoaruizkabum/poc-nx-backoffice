@@ -13,59 +13,67 @@ jobs:
   build-affected:
     name: Build affected projects
     runs-on: ubuntu-latest
+
+    env:
+      NX_VERBOSE_LOGGING: true
+
+      # habilita daemon off em CI
+      NX_DAEMON: false
+
+      # opcional caso vá usar nx cloud futuramente
+      # NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Set SHAs for affected commands
+        uses: nrwl/nx-set-shas@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Cache Nx computation cache
-        id: nx-cache
+      # cache do npm do nx local cache
+      # apenas persistência entre runs
+      - name: Restore Nx cache
         uses: actions/cache@v4
         with:
-          path: .nx/cache
-          key: nx-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            .nx/cache
+          key: >
+            nx-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            nx-${{ runner.os }}-${{ github.ref_name }}-
+            nx-${{ runner.os }}-
 
-      - name: Show Nx cache status
+      - name: Show affected projects
         run: |
-          echo "Cache hit: ${{ steps.nx-cache.outputs.cache-hit }}"
+          echo "NX_BASE=$NX_BASE"
+          echo "NX_HEAD=$NX_HEAD"
 
-      # Determina os SHAs base e head para o nx affected.
-      # NX_BASE aponta para o último commit bem-sucedido na main,
-      # NX_HEAD aponta para o commit atual.
-      - name: Derive SHAs for nx affected
-        uses: nrwl/nx-set-shas@v4
+          npx nx show projects \
+            --affected \
+            --base=$NX_BASE \
+            --head=$NX_HEAD
 
-      # Exibe quais projetos serão buildados antes de rodar
-      - name: List affected projects
-        run: npx nx show projects --affected --base=$NX_BASE --head=$NX_HEAD
-
-      # Builda somente os projetos afetados pelas alterações.
-      # A flag --configuration=production garante build otimizado.
-      # O nx resolve automaticamente as dependências entre projetos
-      # (ex: shell depende dos remotes via module federation).
       - name: Build affected projects
-        env:
-          NX_CACHE_USE_LEGACY_CACHE: true
-        run: >
-          npx nx affected
-          --target=build
-          --base=$NX_BASE
-          --head=$NX_HEAD
-          --configuration=production
-          --parallel=3
+        run: |
+          npx nx affected \
+            --target=build \
+            --base=$NX_BASE \
+            --head=$NX_HEAD \
+            --configuration=production \
+            --parallel=3 \
+            --verbose
 
-      # Faz upload dos artefatos de cada app separadamente para uso em etapas futuras de deploy.
-      # if-no-files-found: warn evita falha caso o app não tenha sido afetado e não foi buildado.
       - name: Upload artifact - shell
         uses: actions/upload-artifact@v4
         with:
