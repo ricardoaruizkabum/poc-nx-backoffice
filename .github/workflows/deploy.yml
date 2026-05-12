@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: shell
-          path: dist/apps/shell
+          path: apps/shell/dist
           if-no-files-found: ignore
           retention-days: 7
 
@@ -86,7 +86,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: product
-          path: dist/apps/product
+          path: apps/product/dist
           if-no-files-found: ignore
           retention-days: 7
 
@@ -94,7 +94,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: pc_builder
-          path: dist/apps/pc_builder
+          path: apps/pc_builder/dist
           if-no-files-found: ignore
           retention-days: 7
 
@@ -102,6 +102,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: manager_cx
-          path: dist/apps/manager_cx
+          path: apps/manager_cx/dist
           if-no-files-found: ignore
           retention-days: 7
