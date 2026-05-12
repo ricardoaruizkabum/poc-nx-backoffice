@@ -1,7 +1,5 @@
 import { ModuleFederationConfig } from '@nx/module-federation';
 
-console.log('process.env.PRODUCT_REMOTE_URL', process.env.PRODUCT_REMOTE_URL);
-
 const config: ModuleFederationConfig = {
   name: 'shell',
   /**
