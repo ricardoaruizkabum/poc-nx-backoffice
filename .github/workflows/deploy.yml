@@ -36,7 +36,7 @@ jobs:
           key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Show Nx cache status
-        run: echo "Cache hit: ${{ steps.nx-cache.outputs.cache-hit }}"
+        run: echo 'Cache hit: ${{ steps.nx-cache.outputs.cache-hit }}'
 
       # Determina os SHAs base e head para o nx affected.
       # NX_BASE aponta para o último commit bem-sucedido na main,
