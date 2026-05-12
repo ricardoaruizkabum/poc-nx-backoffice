@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .nx/cache
-          key: nx-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: nx-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Show Nx cache status
         run: |
