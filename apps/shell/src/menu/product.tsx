@@ -9,7 +9,7 @@ export const productMenu: MenuItem[] = [
     icon: FolderKanban,
     children: [
       {
-        title: 'Opções 01',
+        title: 'Opções 001',
         url: '/product/page1',
         icon: Settings,
       },
