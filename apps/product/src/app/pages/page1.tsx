@@ -3,9 +3,9 @@ import { Button, Input } from '@kbm/ui';
 export function Page1() {
   return (
     <div>
-      <h2 className="text-xl font-bold">Produto - Página 01</h2>
+      <h2 className="text-xl font-bold">Produto - Página 001</h2>
       <p className="text-lg font-semibold text-gray-500">
-        Conteúdo da Página 01.
+        Conteúdo da Página 001.
       </p>
 
       <div className="flex">
