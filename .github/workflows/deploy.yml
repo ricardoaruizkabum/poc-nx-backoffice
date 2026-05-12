@@ -51,12 +51,36 @@ jobs:
           --configuration=production
           --parallel=3
 
-      # Faz upload dos artefatos gerados em dist/apps/ para uso em etapas futuras de deploy.
-      # Cada app tem seu próprio artefato nomeado com o slug do projeto.
-      - name: Upload build artifacts
+      # Faz upload dos artefatos de cada app separadamente para uso em etapas futuras de deploy.
+      # if-no-files-found: warn evita falha caso o app não tenha sido afetado e não foi buildado.
+      - name: Upload artifact - shell
         uses: actions/upload-artifact@v4
         with:
-          name: dist-apps
-          path: dist/apps/
+          name: dist-shell
+          path: apps/shell/dist
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload artifact - product
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-product
+          path: apps/product/dist
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload artifact - pc_builder
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-pc_builder
+          path: apps/pc_builder/dist
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload artifact - manager_cx
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-manager_cx
+          path: apps/manager_cx/dist
           if-no-files-found: warn
           retention-days: 7
