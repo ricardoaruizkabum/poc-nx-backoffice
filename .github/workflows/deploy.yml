@@ -55,7 +55,7 @@ jobs:
       # (ex: shell depende dos remotes via module federation).
       - name: Build affected projects
         env:
-          NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
+          NX_CACHE_USE_LEGACY_CACHE: true
         run: >
           npx nx affected
           --target=build
