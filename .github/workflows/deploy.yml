@@ -16,7 +16,6 @@ jobs:
 
     env:
       NX_DAEMON: false
-      NX_VERBOSE_LOGGING: true
 
     steps:
       - name: Checkout repository
@@ -47,7 +46,7 @@ jobs:
             --affected \
             --base=$NX_BASE \
             --head=$NX_HEAD \
-            --json | jq -r '.[]')
+            --plain)
 
           echo ""
           echo "Affected projects:"
@@ -71,8 +70,7 @@ jobs:
               echo "=============================="
 
               npx nx build "$project" \
-                --configuration=production \
-                --verbose
+                --configuration=production
             fi
           done <<< "${{ steps.affected.outputs.projects }}"
 
