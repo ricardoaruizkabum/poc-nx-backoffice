@@ -63,7 +63,8 @@
         "options": {
           "buildTarget": "shell:build",
           "hmr": true,
-          "port": 4200
+          "port": 4200,
+          "devRemotes": ["product", "pc_builder", "manager_cx"]
         },
         "configurations": {
           "development": {
@@ -106,10 +107,5 @@
         }
       }
     }
-  },
-  "devDependencies": {
-    "product": "*",
-    "pc_builder": "*",
-    "manager_cx": "*"
   }
 }
