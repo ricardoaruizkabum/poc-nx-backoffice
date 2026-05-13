@@ -53,6 +53,7 @@
           }
         },
         "dependsOn": [
+          { "projects": ["@kbm/ui"], "target": "build" },
           "typecheck"
         ]
       },
