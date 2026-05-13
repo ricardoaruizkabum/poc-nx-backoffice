@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 1: Determina quais apps foram afetados pelo commit atual.
+  # Usa nx affected para comparar com o último commit bem-sucedido na main
+  # (NX_BASE via nrwl/nx-set-shas) e filtra somente os apps deployáveis,
+  # excluindo bibliotecas internas como packages/ui.
+  # ─────────────────────────────────────────────────────────────────────────────
+  determine-affected:
+    name: Determine affected apps
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has-affected: ${{ steps.set-matrix.outputs.has-affected }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Define NX_BASE (último commit bem-sucedido na main) e NX_HEAD (commit atual).
+      # Isso garante que apenas as mudanças incrementais desde o último deploy bem-sucedido
+      # sejam consideradas, mesmo que vários commits tenham sido feitos em sequência.
+      - name: Derive SHAs for nx affected
+        uses: nrwl/nx-set-shas@v4
+
+      # Obtém a lista de projetos afetados em formato JSON e filtra somente
+      # os apps deployáveis (shell, product, pc_builder, manager_cx).
+      # Bibliotecas como packages/ui são excluídas da matrix — quando ui muda,
+      # os apps que dependem dela já aparecem automaticamente como afetados.
+      - name: Compute affected apps matrix
+        id: set-matrix
+        run: |
+          DEPLOYABLE_APPS='["shell","product","pc_builder","manager_cx"]'
+
+          ALL_AFFECTED=$(npx nx show projects --affected --base=$NX_BASE --head=$NX_HEAD --json 2>/dev/null || echo '[]')
+
+          MATRIX=$(echo "$ALL_AFFECTED" | jq -c --argjson deployable "$DEPLOYABLE_APPS" \
+            '[.[] | select(. as $p | $deployable | index($p) != null)]')
+
+          if [ "$MATRIX" = "[]" ] || [ -z "$MATRIX" ]; then
+            echo "has-affected=false" >> $GITHUB_OUTPUT
+            echo "matrix=[]" >> $GITHUB_OUTPUT
+            echo "No deployable apps affected. Skipping deploy."
+          else
+            echo "has-affected=true" >> $GITHUB_OUTPUT
+            echo "matrix=$MATRIX" >> $GITHUB_OUTPUT
+            echo "Affected apps to deploy: $MATRIX"
+          fi
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 2: Builda e deploya em paralelo cada app afetado.
+  # A matrix strategy garante que cada app roda em seu próprio runner isolado,
+  # permitindo execução paralela e falha isolada por app.
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-and-deploy:
+    name: Build & deploy ${{ matrix.app }}
+    needs: determine-affected
+    if: needs.determine-affected.outputs.has-affected == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ${{ fromJSON(needs.determine-affected.outputs.matrix) }}
+      fail-fast: false # falha em um app não cancela o deploy dos outros
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Carrega as URLs de produção dos remotes MFE a partir do .env.production commitado.
+      # Essas URLs são públicas (visíveis no bundle final) e não precisam ser secrets.
+      # O grep filtra comentários e linhas em branco antes de escrever no $GITHUB_ENV.
+      - name: Load production env vars
+        run: grep -v '^#' .env.production | grep -v '^$' >> $GITHUB_ENV
+
+      - name: Build ${{ matrix.app }}
+        run: npx nx build ${{ matrix.app }} --configuration=production
+
+      # TODO: habilitar quando o ambiente S3/CloudFront estiver configurado.
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+
+      # Sincroniza o build para o path correspondente ao app no bucket S3.
+      # --delete remove arquivos obsoletos do bucket que não existem mais no build,
+      # garantindo que bundles antigos com hash diferente não acumulem no bucket.
+      # - name: Deploy ${{ matrix.app }} to S3
+      #   run: |
+      #     aws s3 sync dist/apps/${{ matrix.app }} \
+      #       s3://${{ secrets.S3_BUCKET_NAME }}/${{ matrix.app }}/ \
+      #       --delete \
+      #       --cache-control "public,max-age=31536000,immutable"
+
+      # Invalida somente o path do app deployado no CloudFront.
+      # Isso evita invalidar o cache de apps que não foram alterados.
+      # - name: Invalidate CloudFront cache for ${{ matrix.app }}
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+      #       --paths "/${{ matrix.app }}/*"
+
+      # Faz upload do artefato gerado para uso em etapas futuras de deploy.
+      # if-no-files-found: error garante falha explícita caso o build não tenha gerado output.
+      # Nota: o output correto do nx build é dist/apps/<app> (definido em nx.json via
+      # {workspaceRoot}/dist/{projectRoot}), não apps/<app>/dist.
+      - name: Upload artifact - ${{ matrix.app }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}
+          path: apps/${{ matrix.app }}/dist
+          if-no-files-found: error
+          retention-days: 7
