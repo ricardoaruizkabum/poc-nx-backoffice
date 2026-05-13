@@ -5,6 +5,7 @@
   "nx": {
     "name": "shell",
     "sourceRoot": "apps/shell/src",
+    "implicitDependencies": ["!product", "!pc_builder", "!manager_cx"],
     "targets": {
       "build": {
         "executor": "@nx/webpack:webpack",
